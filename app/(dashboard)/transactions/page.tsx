@@ -215,7 +215,7 @@ export default function TransactionsPage() {
               Add Transaction
             </Button>
           </DialogTrigger>
-          <DialogContent className="glass-card border-border/30 text-foreground">
+          <DialogContent className="bg-[oklch(0.12_0.03_260)] border-border/50 text-foreground">
             <DialogHeader>
               <DialogTitle className="text-foreground">Add Transaction</DialogTitle>
             </DialogHeader>
