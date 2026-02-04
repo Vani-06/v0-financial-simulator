@@ -7,7 +7,6 @@ import { Progress } from "@/components/ui/progress"
 import { 
   TrendingUp, 
   TrendingDown, 
-  Target, 
   Sparkles,
   ArrowRight,
   CheckCircle2,
@@ -253,8 +252,6 @@ export default function DashboardPage() {
     ? Math.min(100, ((profile.total_savings || 0) / profile.savings_goal) * 100)
     : 0
 
-  const investmentProgress = Math.min(100, ((profile?.total_savings || 0) / 500) * 100)
-
   return (
     <div className="space-y-8 max-w-6xl mx-auto pt-8 lg:pt-0">
       {/* Header */}
@@ -345,26 +342,6 @@ export default function DashboardPage() {
           </p>
         )}
       </div>
-
-      {/* Investment Progress */}
-      {!profile?.investment_unlocked && (
-        <div className="glass-card rounded-2xl p-6 space-y-4">
-          <div className="flex items-center gap-2">
-            <Target className="w-5 h-5 text-primary" />
-            <h2 className="text-xl font-bold text-foreground">Unlock Investments</h2>
-          </div>
-          <p className="text-muted-foreground">
-            Save $500 to unlock the investment simulator and learn about stocks & funds!
-          </p>
-          <div className="space-y-2">
-            <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">${profile?.total_savings || 0} / $500</span>
-              <span className="text-primary">{Math.round(investmentProgress)}%</span>
-            </div>
-            <Progress value={investmentProgress} className="h-3 bg-muted" />
-          </div>
-        </div>
-      )}
 
       {/* Recent Transactions */}
       <div className="glass-card rounded-2xl p-6 space-y-4">
