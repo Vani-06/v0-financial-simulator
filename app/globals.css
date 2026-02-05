@@ -135,7 +135,10 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
+    background: linear-gradient(135deg, #040404 0%, #080B10 50%, #0E1117 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
   }
 }
 
@@ -171,9 +174,8 @@
 }
 
 .bg-gradient-radial {
-  background: radial-gradient(ellipse at 50% 0%, oklch(0.2 0 0 / 0.3) 0%, transparent 50%),
-              radial-gradient(ellipse at 80% 80%, oklch(0.15 0 0 / 0.2) 0%, transparent 40%),
-              var(--background);
+  background: linear-gradient(135deg, #040404 0%, #1c2f4e 50%, #0E1117 100%);
+  background-attachment: fixed;
 }
 
 /* Animation utilities */

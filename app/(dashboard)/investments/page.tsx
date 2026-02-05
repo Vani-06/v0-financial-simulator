@@ -31,6 +31,7 @@ import {
   Area,
   AreaChart
 } from "recharts"
+import { useCurrency } from "@/lib/useCurrency"
 import { 
   TrendingUp, 
   TrendingDown, 
@@ -235,6 +236,7 @@ export default function InvestmentsPage() {
   const [submitting, setSubmitting] = useState(false)
   const [showLearnModal, setShowLearnModal] = useState(false)
   const [activeTip, setActiveTip] = useState(0)
+  const { currencySymbol } = useCurrency()
   const router = useRouter()
   const supabase = createClient()
 
@@ -389,9 +391,9 @@ export default function InvestmentsPage() {
     
     const profit = totalValue - (investment.shares * investment.buy_price)
     if (profit >= 0) {
-      toast.success(`Sold for $${totalValue.toFixed(2)} (+$${profit.toFixed(2)} profit!)`)
+      toast.success(`Sold for ${currencySymbol}${totalValue.toFixed(2)} (+${currencySymbol}${profit.toFixed(2)} profit!)`)
     } else {
-      toast.info(`Sold for $${totalValue.toFixed(2)} ($${profit.toFixed(2)} loss)`)
+      toast.info(`Sold for ${currencySymbol}${totalValue.toFixed(2)} (${currencySymbol}${profit.toFixed(2)} loss)`)
     }
   }
 
@@ -475,34 +477,34 @@ export default function InvestmentsPage() {
 
       {/* Your Money Overview */}
       <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-card border border-border/50 rounded-2xl p-5 space-y-2">
+        <div className="glass-card rounded-2xl p-5 space-y-2">
           <div className="flex items-center justify-between">
             <p className="text-sm text-muted-foreground">Your Cash</p>
             <DollarSign className="w-4 h-4 text-muted-foreground" />
           </div>
-          <p className={`text-2xl font-bold ${(profile?.current_balance || 0) >= 0 ? 'text-green-400' : 'text-red-400'}`}>${profile?.current_balance.toLocaleString()}</p>
+          <p className={`text-2xl font-bold ${(profile?.current_balance || 0) >= 0 ? 'text-green-400' : 'text-red-400'}`}>{currencySymbol}{profile?.current_balance.toLocaleString()}</p>
           <p className="text-xs text-muted-foreground">Available to invest</p>
         </div>
         
-        <div className="bg-card border border-border/50 rounded-2xl p-5 space-y-2">
+        <div className="glass-card rounded-2xl p-5 space-y-2">
           <div className="flex items-center justify-between">
             <p className="text-sm text-muted-foreground">Invested</p>
             <BarChart3 className="w-4 h-4 text-primary" />
           </div>
-          <p className="text-2xl font-bold text-primary">${portfolioValue.toFixed(2)}</p>
+          <p className="text-2xl font-bold text-primary">{currencySymbol}{portfolioValue.toFixed(2)}</p>
           <p className="text-xs text-muted-foreground">Current portfolio value</p>
         </div>
         
-        <div className="bg-card border border-border/50 rounded-2xl p-5 space-y-2">
+        <div className="glass-card rounded-2xl p-5 space-y-2">
           <div className="flex items-center justify-between">
             <p className="text-sm text-muted-foreground">Total Spent</p>
             <Target className="w-4 h-4 text-muted-foreground" />
           </div>
-          <p className="text-2xl font-bold text-foreground">${totalCost.toFixed(2)}</p>
+          <p className="text-2xl font-bold text-foreground">{currencySymbol}{totalCost.toFixed(2)}</p>
           <p className="text-xs text-muted-foreground">Original investment</p>
         </div>
         
-        <div className="bg-card border border-border/50 rounded-2xl p-5 space-y-2">
+        <div className="glass-card rounded-2xl p-5 space-y-2">
           <div className="flex items-center justify-between">
             <p className="text-sm text-muted-foreground">Profit/Loss</p>
             {totalProfit >= 0 ? (
@@ -512,7 +514,7 @@ export default function InvestmentsPage() {
             )}
           </div>
           <p className={`text-2xl font-bold ${totalProfit >= 0 ? 'text-emerald-500' : 'text-red-400'}`}>
-            {totalProfit >= 0 ? '+' : ''}${totalProfit.toFixed(2)}
+            {totalProfit >= 0 ? '+' : ''}{currencySymbol}{totalProfit.toFixed(2)}
           </p>
           <p className="text-xs text-muted-foreground">
             {profitPercent >= 0 ? '+' : ''}{profitPercent.toFixed(1)}% overall
@@ -559,7 +561,7 @@ export default function InvestmentsPage() {
                     className={`text-left p-5 rounded-2xl border transition-all hover:scale-[1.02] ${
                       selectedAsset?.symbol === fund.symbol
                         ? "bg-primary/10 border-primary shadow-lg shadow-primary/10"
-                        : "bg-card border-border/50 hover:border-primary/30"
+                        : "glass-card hover:border-primary/30"
                     }`}
                   >
                     <div className="flex items-start justify-between mb-3">
@@ -571,7 +573,7 @@ export default function InvestmentsPage() {
                     <p className="font-bold text-lg text-foreground">{fund.symbol}</p>
                     <p className="text-sm text-muted-foreground mb-2">{fund.name}</p>
                     <p className="text-xs text-muted-foreground mb-3 line-clamp-2">{fund.description}</p>
-                    <p className="text-xl font-bold text-primary">${fund.price.toFixed(2)}</p>
+                    <p className="text-xl font-bold text-primary">{currencySymbol}{fund.price.toFixed(2)}</p>
                   </button>
                 )
               })}
@@ -597,7 +599,7 @@ export default function InvestmentsPage() {
                     className={`text-left p-5 rounded-2xl border transition-all hover:scale-[1.02] ${
                       selectedAsset?.symbol === stock.symbol
                         ? "bg-primary/10 border-primary shadow-lg shadow-primary/10"
-                        : "bg-card border-border/50 hover:border-primary/30"
+                        : "glass-card hover:border-primary/30"
                     }`}
                   >
                     <div className="flex items-start justify-between mb-3">
@@ -609,7 +611,7 @@ export default function InvestmentsPage() {
                     <p className="font-bold text-lg text-foreground">{stock.symbol}</p>
                     <p className="text-sm text-muted-foreground mb-2">{stock.name}</p>
                     <p className="text-xs text-muted-foreground mb-3 line-clamp-2">{stock.description}</p>
-                    <p className="text-xl font-bold text-foreground">${stock.price.toFixed(2)}</p>
+                    <p className="text-xl font-bold text-foreground">{currencySymbol}{stock.price.toFixed(2)}</p>
                   </button>
                 )
               })}
@@ -618,7 +620,7 @@ export default function InvestmentsPage() {
 
           {/* Selected Asset Detail */}
           {selectedAsset && (
-            <div className="bg-card border border-border/50 rounded-2xl p-6 space-y-5">
+            <div className="glass-card rounded-2xl p-6 space-y-5">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
                   <div className="p-3 bg-primary/20 rounded-xl">
@@ -633,7 +635,7 @@ export default function InvestmentsPage() {
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-3xl font-bold text-primary">${selectedAsset.price.toFixed(2)}</p>
+                  <p className="text-3xl font-bold text-primary">{currencySymbol}{selectedAsset.price.toFixed(2)}</p>
                   <p className="text-sm text-muted-foreground">per share</p>
                 </div>
               </div>
@@ -665,10 +667,10 @@ export default function InvestmentsPage() {
                       domain={['auto', 'auto']}
                       tickLine={false}
                       axisLine={false}
-                      tickFormatter={(value) => `$${value}`}
+                      tickFormatter={(value) => `${currencySymbol}${value}`}
                     />
                     <Tooltip 
-                      formatter={(value: number) => [`$${value.toFixed(2)}`, 'Price']}
+                      formatter={(value) => [`${currencySymbol}${Number(value).toFixed(2)}`, 'Price']}
                       contentStyle={{ 
                         backgroundColor: 'hsl(var(--card))', 
                         border: '1px solid hsl(var(--border))',
@@ -721,7 +723,7 @@ export default function InvestmentsPage() {
                         className="h-12 text-lg"
                       />
                       <p className="text-xs text-muted-foreground">
-                        You have ${profile?.current_balance.toLocaleString()} available
+                        You have {currencySymbol}{profile?.current_balance.toLocaleString()} available
                       </p>
                     </div>
                     
@@ -729,7 +731,7 @@ export default function InvestmentsPage() {
                       <div className="p-4 rounded-xl bg-muted/30 space-y-3">
                         <div className="flex justify-between text-sm">
                           <span className="text-muted-foreground">Price per share</span>
-                          <span className="font-medium">${selectedAsset.price.toFixed(2)}</span>
+                          <span className="font-medium">{currencySymbol}{selectedAsset.price.toFixed(2)}</span>
                         </div>
                         <div className="flex justify-between text-sm">
                           <span className="text-muted-foreground">Number of shares</span>
@@ -738,7 +740,7 @@ export default function InvestmentsPage() {
                         <div className="border-t border-border pt-3 flex justify-between">
                           <span className="font-semibold">Total Cost</span>
                           <span className="font-bold text-primary text-lg">
-                            ${(Number(buyAmount) * selectedAsset.price).toFixed(2)}
+                            {currencySymbol}{(Number(buyAmount) * selectedAsset.price).toFixed(2)}
                           </span>
                         </div>
                         {Number(buyAmount) * selectedAsset.price > (profile?.current_balance || 0) && (
@@ -795,7 +797,7 @@ export default function InvestmentsPage() {
                   const Icon = asset?.icon || Target
 
                   return (
-                    <div key={inv.id} className="bg-card border border-border/50 rounded-2xl p-5">
+                    <div key={inv.id} className="glass-card rounded-2xl p-5">
                       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <div className="flex items-center gap-4">
                           <div className="p-3 bg-muted/50 rounded-xl">
@@ -805,19 +807,19 @@ export default function InvestmentsPage() {
                             <p className="font-bold text-lg text-foreground">{inv.symbol}</p>
                             <p className="text-sm text-muted-foreground">{inv.name}</p>
                             <p className="text-xs text-muted-foreground mt-1">
-                              {inv.shares} shares @ ${inv.buy_price.toFixed(2)} avg
+                              {inv.shares} shares @ {currencySymbol}{inv.buy_price.toFixed(2)} avg
                             </p>
                           </div>
                         </div>
                         
                         <div className="flex items-center gap-6">
                           <div className="text-right">
-                            <p className="text-xl font-bold text-foreground">${currentValue.toFixed(2)}</p>
+                            <p className="text-xl font-bold text-foreground">{currencySymbol}{currentValue.toFixed(2)}</p>
                             <p className={`text-sm font-medium flex items-center justify-end gap-1 ${
                               profit >= 0 ? 'text-emerald-500' : 'text-red-400'
                             }`}>
                               {profit >= 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
-                              {profit >= 0 ? '+' : ''}${profit.toFixed(2)} ({profitPct >= 0 ? '+' : ''}{profitPct.toFixed(1)}%)
+                              {profit >= 0 ? '+' : ''}{currencySymbol}{profit.toFixed(2)} ({profitPct >= 0 ? '+' : ''}{profitPct.toFixed(1)}%)
                             </p>
                           </div>
                           <Button

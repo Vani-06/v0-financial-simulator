@@ -21,6 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { useCurrency } from "@/lib/useCurrency"
 import { 
   Plus, 
   TrendingUp, 
@@ -55,6 +56,7 @@ export default function TransactionsPage() {
   const [isOpen, setIsOpen] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [filter, setFilter] = useState<"all" | "income" | "expense">("all")
+  const { currencySymbol } = useCurrency()
   
   // Form state
   const [description, setDescription] = useState("")
@@ -253,7 +255,7 @@ export default function TransactionsPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="amount" className="text-foreground">Amount ($)</Label>
+                <Label htmlFor="amount" className="text-foreground">Amount ({currencySymbol})</Label>
                 <Input
                   id="amount"
                   type="number"
@@ -314,16 +316,16 @@ export default function TransactionsPage() {
       <div className="grid sm:grid-cols-3 gap-4">
         <div className="glass-card rounded-2xl p-6 space-y-2">
           <p className="text-sm text-muted-foreground">Total Income</p>
-          <p className="text-2xl font-bold text-green-500">+${totalIncome.toLocaleString()}</p>
+          <p className="text-2xl font-bold text-green-500">+{currencySymbol}{totalIncome.toLocaleString()}</p>
         </div>
         <div className="glass-card rounded-2xl p-6 space-y-2">
           <p className="text-sm text-muted-foreground">Total Expenses</p>
-          <p className="text-2xl font-bold text-red-400">-${totalExpenses.toLocaleString()}</p>
+          <p className="text-2xl font-bold text-red-400">-{currencySymbol}{totalExpenses.toLocaleString()}</p>
         </div>
         <div className="glass-card rounded-2xl p-6 space-y-2">
           <p className="text-sm text-muted-foreground">Net Balance</p>
           <p className={`text-2xl font-bold ${totalIncome - totalExpenses >= 0 ? 'text-green-500' : 'text-red-400'}`}>
-            ${(totalIncome - totalExpenses).toLocaleString()}
+            {currencySymbol}{(totalIncome - totalExpenses).toLocaleString()}
           </p>
         </div>
       </div>
@@ -384,7 +386,7 @@ export default function TransactionsPage() {
                 </div>
                 <div className="flex items-center gap-4">
                   <p className={`font-semibold text-lg ${tx.type === "income" ? "text-green-500" : "text-red-400"}`}>
-                    {tx.type === "income" ? "+" : "-"}${tx.amount.toLocaleString()}
+                    {tx.type === "income" ? "+" : "-"}{currencySymbol}{tx.amount.toLocaleString()}
                   </p>
                   <Button
                     size="icon"

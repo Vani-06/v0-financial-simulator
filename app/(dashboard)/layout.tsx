@@ -7,6 +7,7 @@ import { useRouter, usePathname } from "next/navigation"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
+import { currencies } from "@/lib/useCurrency"
 import { 
   Wallet, 
   LayoutDashboard, 
@@ -19,19 +20,6 @@ import {
   Settings,
   User
 } from "lucide-react"
-
-const currencies: Record<string, string> = {
-  USD: "$",
-  INR: "₹",
-  EUR: "€",
-  GBP: "£",
-  JPY: "¥",
-  CNY: "¥",
-  KRW: "₩",
-  BTC: "₿",
-  AED: "د.إ",
-  SAR: "﷼",
-}
 
 interface Profile {
   display_name: string
@@ -167,7 +155,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   className="fixed inset-0 z-40" 
                   onClick={() => setProfileMenuOpen(false)}
                 />
-                <div className="absolute right-0 mt-2 w-48 rounded-xl py-2 z-50 animate-fade-in bg-[#0c0c0c] border border-white/50">
+                <div className="absolute right-0 mt-2 w-48 rounded-xl py-2 z-50 animate-fade-in bg-[#040404] border border-white/30">
                   <div className="px-4 py-2 border-b border-white/20">
                     <p className="font-medium text-foreground text-sm">{profile?.display_name || "User"}</p>
                     <p className="text-xs text-muted-foreground">{profile?.financial_personality}</p>

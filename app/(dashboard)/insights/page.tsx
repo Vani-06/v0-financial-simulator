@@ -5,6 +5,7 @@ import React from "react"
 import { useEffect, useState } from "react"
 import { createClient } from "@/lib/supabase/client"
 import { Progress } from "@/components/ui/progress"
+import { useCurrency } from "@/lib/useCurrency"
 import { 
   Loader2,
   Sparkles,
@@ -538,6 +539,7 @@ export default function InsightsPage() {
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [challenges, setChallenges] = useState<Challenge[]>([])
   const [loading, setLoading] = useState(true)
+  const { currencySymbol } = useCurrency()
   const supabase = createClient()
 
   useEffect(() => {
@@ -740,18 +742,18 @@ export default function InsightsPage() {
       <div className="grid md:grid-cols-3 gap-4">
         <div className="glass-card rounded-2xl p-5 text-center space-y-1">
           <p className="text-sm text-muted-foreground">Total Earned</p>
-          <p className="text-3xl font-bold text-green-500">${totalIncome.toLocaleString()}</p>
+          <p className="text-3xl font-bold text-green-500">{currencySymbol}{totalIncome.toLocaleString()}</p>
           <p className="text-xs text-muted-foreground">Sunlight for your tree</p>
         </div>
         <div className="glass-card rounded-2xl p-5 text-center space-y-1">
           <p className="text-sm text-muted-foreground">Total Spent</p>
-          <p className="text-3xl font-bold text-pink-400">${totalExpenses.toLocaleString()}</p>
+          <p className="text-3xl font-bold text-pink-400">{currencySymbol}{totalExpenses.toLocaleString()}</p>
           <p className="text-xs text-muted-foreground">Water usage</p>
         </div>
         <div className="glass-card rounded-2xl p-5 text-center space-y-1">
           <p className="text-sm text-muted-foreground">Net Savings</p>
           <p className={`text-3xl font-bold ${netSavings >= 0 ? 'text-primary' : 'text-orange-400'}`}>
-            ${Math.abs(netSavings).toLocaleString()}
+            {currencySymbol}{Math.abs(netSavings).toLocaleString()}
           </p>
           <p className="text-xs text-muted-foreground">Growth nutrients</p>
         </div>
@@ -774,7 +776,7 @@ export default function InsightsPage() {
                       <div className="w-3 h-3 rounded-full" style={{ backgroundColor: cat.color }} />
                       <span className="text-sm text-foreground">{cat.name}</span>
                     </div>
-                    <span className="text-sm font-medium text-foreground">${cat.value.toLocaleString()}</span>
+                    <span className="text-sm font-medium text-foreground">{currencySymbol}{cat.value.toLocaleString()}</span>
                   </div>
                   <div className="h-3 bg-muted/30 rounded-full overflow-hidden">
                     <div 
@@ -827,10 +829,10 @@ export default function InsightsPage() {
           <div className="flex-1 space-y-2">
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">
-                ${(profile?.total_savings || netSavings).toLocaleString()} saved
+                {currencySymbol}{(profile?.total_savings || netSavings).toLocaleString()} saved
               </span>
               <span className="text-foreground font-medium">
-                Goal: ${profile?.savings_goal?.toLocaleString() || 0}
+                Goal: {currencySymbol}{profile?.savings_goal?.toLocaleString() || 0}
               </span>
             </div>
             <div className="h-4 bg-muted/30 rounded-full overflow-hidden">

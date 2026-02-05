@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { createClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
+import { useCurrency } from "@/lib/useCurrency"
 import { 
   TrendingUp, 
   TrendingDown, 
@@ -119,6 +120,7 @@ export default function DashboardPage() {
   const [currentScenario, setCurrentScenario] = useState<typeof DAILY_SCENARIOS[0] | null>(null)
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
+  const { currencySymbol } = useCurrency()
   const supabase = createClient()
 
   useEffect(() => {
@@ -234,9 +236,9 @@ export default function DashboardPage() {
     setSubmitting(false)
 
     if (choice.isGood) {
-      toast.success(`+$10 added to your balance!`)
+      toast.success(`+${currencySymbol}10 added to your balance!`)
     } else {
-      toast.info(`-$5 from your balance. Learn from it!`)
+      toast.info(`-${currencySymbol}5 from your balance. Learn from it!`)
     }
   }
 
@@ -261,7 +263,7 @@ export default function DashboardPage() {
         <div className="glass-card rounded-2xl p-6 space-y-2">
           <p className="text-sm text-muted-foreground">Current Balance</p>
           <p className={`text-3xl font-bold ${(profile?.current_balance || 0) >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-            ${(profile?.current_balance || 0).toLocaleString()}
+            {currencySymbol}{(profile?.current_balance || 0).toLocaleString()}
           </p>
         </div>
 
@@ -269,7 +271,7 @@ export default function DashboardPage() {
           <p className="text-sm text-muted-foreground">Total Savings</p>
           <div className="flex items-center gap-2">
             <p className="text-3xl font-bold text-foreground">
-              ${(profile?.total_savings || 0).toLocaleString()}
+              {currencySymbol}{(profile?.total_savings || 0).toLocaleString()}
             </p>
             <TrendingUp className="w-5 h-5 text-green-500" />
           </div>
@@ -278,7 +280,7 @@ export default function DashboardPage() {
         <div className="glass-card rounded-2xl p-6 space-y-2">
           <p className="text-sm text-muted-foreground">Monthly Goal</p>
           <p className="text-3xl font-bold text-foreground">
-            ${(profile?.savings_goal || 0).toLocaleString()}
+            {currencySymbol}{(profile?.savings_goal || 0).toLocaleString()}
           </p>
           <Progress value={savingsProgress} className="h-2 bg-muted" />
         </div>
@@ -365,7 +367,7 @@ export default function DashboardPage() {
                   </div>
                 </div>
                 <p className={`font-semibold ${tx.type === "income" ? "text-green-500" : "text-red-400"}`}>
-                  {tx.type === "income" ? "+" : "-"}${tx.amount.toLocaleString()}
+                  {tx.type === "income" ? "+" : "-"}{currencySymbol}{tx.amount.toLocaleString()}
                 </p>
               </div>
             ))}
