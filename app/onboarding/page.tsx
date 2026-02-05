@@ -16,7 +16,7 @@ const QUESTIONS = [
     question: "How much is your monthly income/pocket money?",
     type: "input",
     inputType: "number",
-    placeholder: "Enter amount in $",
+    placeholder: "Enter amount",
     field: "monthly_income",
   },
   {
@@ -38,7 +38,7 @@ const QUESTIONS = [
     question: "How much do you want to save each month?",
     type: "input",
     inputType: "number",
-    placeholder: "Enter your savings target in $",
+    placeholder: "Enter your savings target",
     field: "savings_goal",
   },
   {
